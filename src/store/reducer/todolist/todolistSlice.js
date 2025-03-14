@@ -47,8 +47,9 @@ export const todolistSlice = createSlice({
 				city: 'Khujand',
 			},
 		],
-    filterStatus: "all",
-    filterCity: "all",
+		filterStatus: 'all',
+		filterCity: 'all',
+		showUser: null,
 	},
 	reducers: {
 		del: (state, action) => {
@@ -68,16 +69,29 @@ export const todolistSlice = createSlice({
 			)
 		},
 		searchF: (state, action) => {
-      state.searchQuary = action.payload.toLowerCase()
-    },
-    setFillterStatus : (state,action) => {
-      state.filterStatus = action.payload
-    },
-    setFillterCity : (state,action) => {
-      state.filterCity = action.payload
-    }
+			state.searchQuary = action.payload.toLowerCase()
+		},
+		setFillterStatus: (state, action) => {
+			state.filterStatus = action.payload
+		},
+		setFillterCity: (state, action) => {
+			state.filterCity = action.payload
+		},
+		showUserFunc: (state, action) => {
+			state.showUser =
+				state.data.find(user => user.id == action.payload) || null
+		},
 	},
 })
 
 export default todolistSlice.reducer
-export const { del, add, update, completed , searchF, setFillterStatus , setFillterCity } = todolistSlice.actions
+export const {
+	showUserFunc,
+	del,
+	add,
+	update,
+	completed,
+	searchF,
+	setFillterStatus,
+	setFillterCity,
+} = todolistSlice.actions

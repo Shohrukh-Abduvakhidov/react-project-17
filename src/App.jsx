@@ -7,6 +7,7 @@ import {
 	searchF,
 	setFillterStatus,
 	setFillterCity,
+	showUserFunc,
 } from './store/reducer/todolist/todolistSlice.js'
 import { useEffect, useState } from 'react'
 
@@ -46,6 +47,7 @@ export default function App() {
 	const [EmailE, setEmailE] = useState('')
 	const [city, setCityE] = useState('')
 	const [search, setSearch] = useState('')
+	const [openS, setOpenS] = useState(false)
 	// const [status, setStatus] = useState('')
 	useEffect(() => {
 		setNameE(editUser.name || '')
@@ -90,9 +92,37 @@ export default function App() {
 		setSearch(value)
 		dispatch(searchF(value))
 	}
+	function showUserF(id) {
+		dispatch(showUserFunc(id))
+		setOpenS(true)
+	}
+	const showUser = useSelector(state => state.todolist.showUser)
 
 	return (
 		<div className='w-[100%] m-auto mt-10'>
+			{openS && (
+				<div className='fixed m-auto top-0 right-0 flex justify-center items-center'>
+					<div className='flex w-[500px] h-[100vh] flex-col items-center gap-3 rounded-lg bg-white	border-black border-2 p-[10px]'>
+						<p className='font-bold text-start items-start w-[90%] m-auto'>
+							Show USER
+						</p>
+						<div className='flex w-[90%] font-bold m-auto text-[25px] gap-[30px] flex-col'>
+							<h1 className=''>Name : {showUser.name}</h1>
+							<h1 className=''>Email : {showUser.email}</h1>
+							<div className='flex gap-[20px] items-center'>
+							<h1 className=''>Status : </h1>
+							<h1 className={showUser.status ? "text-[#fff] bg-[green] rounded-md px-[10px] py-[5px]" : "text-[#fff] bg-[red] rounded-md px-[10px] py-[5px]"}>{showUser.status ? "Active" : "Inactive"}</h1>
+							</div>
+							<h1 className=''>City : {showUser.name}</h1>
+						</div>
+						<div className='flex gap-[20px] items-center justify-items-start w-[90%] m-auto	'>
+							<button onClick={() => setOpenS(false)} className='cursor-pointer border px-[10px] py-[5px] rounded-md'>
+								Cancel
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 			<div className='flex gap-[20px] w-[90%] items-center m-auto justify-between'>
 				<h1 className='text-[30px] font-bold my-4'>
 					USER LIST
@@ -241,13 +271,20 @@ export default function App() {
 										>
 											Edit
 										</button>
+										<button
+											onClick={() => showUserF(user.id)}
+											className='bg-blue-900 text-[#fff] cursor-pointer font-bold rounded-md py-[5px] px-[10px]'
+										>
+											Show
+										</button>
+
 										<input
 											checked={user.status}
 											onChange={() => dispatch(completed(user.id))}
 											type='checkbox'
 											name=''
 											id=''
-											className='w-[20px] h-[20px] cursor-pointer'
+											className='w-[50px] h-[50px] cursor-pointer'
 										/>
 									</div>
 								</td>
